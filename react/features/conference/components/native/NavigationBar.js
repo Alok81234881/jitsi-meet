@@ -59,11 +59,11 @@ class NavigationBar extends Component<Props> {
                 <View
                     pointerEvents = 'box-none'
                     style = { styles.roomNameWrapper }>
-                    <Text
+                    {/* <Text
                         numberOfLines = { 1 }
                         style = { styles.roomName }>
                         { this.props._meetingName }
-                    </Text>
+                    </Text> */}
                 </View>
             </View>
         ];

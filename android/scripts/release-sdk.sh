@@ -1,14 +1,19 @@
 #!/bin/bash
 
-set -e -u
+realpath() {
+    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
 
+realpath "$0"
+
+set -e -u
 
 THIS_DIR=$(cd -P "$(dirname "$(readlink "${BASH_SOURCE[0]}" || echo "${BASH_SOURCE[0]}")")" && pwd)
 DEFAULT_MVN_REPO="${THIS_DIR}/../../../jitsi-maven-repository/releases"
 THE_MVN_REPO=${MVN_REPO:-${1:-$DEFAULT_MVN_REPO}}
 MVN_HTTP=0
 SDK_VERSION=$(grep sdkVersion ${THIS_DIR}/../gradle.properties | cut -d"=" -f2)
-RN_VERSION=$(jq -r '.dependencies."react-native"' ${THIS_DIR}/../../package.json)
+RN_VERSION="0.59.4"
 
 if [[ $THE_MVN_REPO == http* ]]; then
     MVN_HTTP=1
