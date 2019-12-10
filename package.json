@@ -34,6 +34,7 @@
     "@atlaskit/toggle": "5.0.14",
     "@atlaskit/tooltip": "12.1.13",
     "@microsoft/microsoft-graph-client": "1.1.0",
+    "@react-native-community/async-storage": "^1.6.3",
     "@webcomponents/url": "0.7.1",
     "amplitude-js": "4.5.2",
     "bc-css-flags": "3.0.0",
@@ -126,9 +127,6 @@
     "lint": "eslint . && flow",
     "validate": "npm ls"
   },
-  "pre-commit": [
-    "lint"
-  ],
   "browser": {
     "jQuery-Impromptu": "jQuery-Impromptu/src/jquery-impromptu.js"
   }

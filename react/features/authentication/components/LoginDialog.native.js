@@ -1,10 +1,10 @@
 /* @flow */
 
 import React, { Component } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View, AsyncStorage } from 'react-native';
 import { connect as reduxConnect } from 'react-redux';
 import type { Dispatch } from 'redux';
-
+// import AsyncStorage from "@react-native-community/async-storage";
 import { toJid } from '../../base/connection';
 import { connect } from '../../base/connection/actions.native';
 import {
@@ -132,6 +132,34 @@ class LoginDialog extends Component<Props, State> {
         this._onLogin = this._onLogin.bind(this);
         this._onPasswordChange = this._onPasswordChange.bind(this);
         this._onUsernameChange = this._onUsernameChange.bind(this);
+
+        this.getURLfromStore();
+    }
+
+    getURLfromStore = async () => {
+        try {
+            var url = await AsyncStorage.getItem("serverURL");
+            var userIndex, passIndex;
+
+            if(url != null) {
+                userIndex = url.indexOf("username");
+                passIndex = url.indexOf("password");
+
+                if((userIndex != -1) && (passIndex != -1)) {
+                    this.state.username = url.substring(userIndex + 9, passIndex - 1);
+                    this.state.password = url.substring(passIndex + 9);
+
+                    console.log("index.native.js", url.substring(userIndex + 9, passIndex - 1));
+                    console.log("index.native.js", url.substring(passIndex + 9));
+
+                    AsyncStorage.clear();
+
+                    this._onLogin();
+                }
+            }
+        } catch(e) {
+            console.log(e);
+        }
     }
 
     /**

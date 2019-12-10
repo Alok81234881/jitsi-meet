@@ -8,19 +8,18 @@
 // execution of base/lib-jitsi-meet (which is understandable given that the
 // polyfills are globals). The remaining problem to be solved here is where to
 // collect the polyfills' files.
-import './features/base/lib-jitsi-meet/native/polyfills-bundler';
+import "./features/base/lib-jitsi-meet/native/polyfills-bundler";
 
-import React, { PureComponent } from 'react';
-import { AppRegistry } from 'react-native';
-
-import { App } from './features/app';
-import { IncomingCallApp } from './features/mobile/incoming-call';
+import React, { PureComponent } from "react";
+import { AppRegistry, AsyncStorage } from "react-native";
+// import AsyncStorage from "@react-native-community/async-storage";
+import { App } from "./features/app";
+import { IncomingCallApp } from "./features/mobile/incoming-call";
 
 /**
  * The type of the React {@code Component} props of {@link Root}.
  */
 type Props = {
-
     /**
      * The URL, if any, with which the app was launched.
      */
@@ -41,16 +40,30 @@ class Root extends PureComponent<Props> {
      * @inheritdoc
      * @returns {ReactElement}
      */
+    storeURL = async url => {
+        try {
+            AsyncStorage.setItem("serverURL", url);
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
     render() {
-        return (
-            <App
-                { ...this.props } />
-        );
+        console.log("index.native.js", this.props);
+        console.log("index.native.js", this.props.url);
+
+        if (this.props.url) {
+            if (this.props.url.url) {
+                this.storeURL(this.props.url.url);
+            }
+        }
+
+        return <App {...this.props} />;
     }
 }
 
 // Register the main/root Component of JitsiMeetView.
-AppRegistry.registerComponent('App', () => Root);
+AppRegistry.registerComponent("App", () => Root);
 
 // Register the main/root Component of IncomingCallView.
-AppRegistry.registerComponent('IncomingCallApp', () => IncomingCallApp);
+AppRegistry.registerComponent("IncomingCallApp", () => IncomingCallApp);
